@@ -1,0 +1,58 @@
+#####################################################################################################################################
+use om;
+#the purpose of this query is to organize the names of the
+#customers, as well as where the customer is from- Nick Mercer
+
+select customer_first_name, customer_last_name, 
+customer_state, customer_city from customers
+order by customer_state ASC, customer_city ASC;
+#####################################################################################################################################
+#in this case, we're organizing the title, artist, and the unit
+#price of the title. We're also making sure that the order by
+#which the unit price is shown is from 16, upwards- Nick Mercer
+
+select title, artist, unit_price from items
+where unit_price>16;
+#####################################################################################################################################
+#The purpose of this query is to organize the customer's first and last name, as well
+#as where they're from. The fieldnames are also each given an alias- Nick Mercer 
+
+select customer_last_name as "Last Name", customer_first_name as "First Name", 
+customer_city as "City", customer_state as "State" from customers;
+#####################################################################################################################################
+#The purpose of this query is to state the ID of the customer, as well as indicate how
+#long it took for whatever they ordered to ship. It took me a while to figure out how to
+#subtract the shipped date from the order date, but after conducting some research, I
+#found out how to do so- Nick Mercer
+
+select customers.customer_id AS "Customer_ID", order_date, shipped_date,
+	CONCAT((customer_last_name), (customer_first_name)) AS "NAME",
+	DATE_FORMAT(order_date, '%m/%d/%y') AS 'Ordered (MM/DD/YY)', 
+  DATE_FORMAT(shipped_date, '%m/%d/%y') AS 'Delivered (MM/DD/YY)',
+  DATEDIFF(shipped_date, order_date) as "Days_to_Ship"
+from customers JOIN orders;
+#####################################################################################################################################
+#This query is used as a means to concatenate the first and last names of the customers. I made sure to not include 
+#the seperate tables of the first and last name into the query. I also included a seperate secondary query 
+#that illustrates what part g would look like if incorporated into part d- Nick Mercer
+
+select
+	CONCAT((customer_last_name), (customer_first_name)) AS "NAME"
+from customers;
+######
+select customers.customer_id AS "Customer_ID", order_date, shipped_date,
+	CONCAT((customer_last_name), (customer_first_name)) AS "NAME",
+	DATE_FORMAT(order_date, '%m/%d/%y') AS 'Ordered (MM/DD/YY)', 
+  DATE_FORMAT(shipped_date, '%m/%d/%y') AS 'Delivered (MM/DD/YY)',
+  DATEDIFF(shipped_date, order_date) as "Days_to_Ship"
+from customers JOIN orders;
+#####################################################################################################################################
+#I actually already included the formatting of the dates in part d already, so I'll just take another
+#screenshot of it and upload it as Assignment1PartH- Nick Mercer
+select customers.customer_id AS "Customer_ID", order_date, shipped_date,
+	CONCAT((customer_last_name), (customer_first_name)) AS "NAME",
+	DATE_FORMAT(order_date, '%m/%d/%y') AS 'Ordered (MM/DD/YY)', 
+  DATE_FORMAT(shipped_date, '%m/%d/%y') AS 'Delivered (MM/DD/YY)',
+  DATEDIFF(shipped_date, order_date) as "Days_to_Ship"
+from customers JOIN orders;
+#####################################################################################################################################
