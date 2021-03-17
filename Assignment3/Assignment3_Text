@@ -1,0 +1,50 @@
+2)#I created a query that stated the total number of orders, as well as stated the total cost of orders- Nick
+select count(*) as "Total number of orders",
+sum(ship_amount) as "Total cost of shipping"
+from orders;
+
+
+3)#I tried something different for the first problem. I was adamant about trying to list the categories from highest to lowest,
+#so I looked into w3schools and attempted to resolve this with their means. I still wasn't able to do so, but I was hoping to get
+#your feedback on what I did wrong-Nick
+
+select c.category_name, max(list_price) as "Largest price of each item", count(*) as "Number of each items"
+from products join categories c on 
+products.category_id = c.category_id
+group by category_name;
+
+4)#In this instance, I displayed the category name, as well as the product name. I was somewhat confused by what c) meant. The
+#inital part of the question made sense, but the rest didn't, so I presumed that it meant by saying that I had to find sum of
+#(category_name*product_name) and display that information as "OrderDetails". I also tried to sum up the amount of products within
+#category and was able to do so, but the total was displayed down at the bottom of the "Products Within Each Category" column.
+#I wasn't able to isolate that result from the rest of the data shown- Nick
+
+select category_name, if(grouping(product_name), "None", product_name) as "Products Within Each Category",
+sum(c.category_id*product_id) as "OrderDetails"
+from products p join categories c
+on c.category_id = p.category_id
+group by product_name with rollup;
+
+5)#This was probably the easiest problem to solve out of the bunch. All I did was convert the example query into a query that
+#utilized subqueries- Nick
+
+select distinct category_name from categories 
+where category_id  in 
+(select category_id from products)
+order by category_name;
+
+6)#I found that in this problem, I had to combine three different tables to get all of the information I needed. I needed to
+#combine the order_items, the customers, and the orders table. I then implemented a few formulas that would calculate the cost 
+#of the items, the amount of items bought, and the cost of the orders. I didn't exactly understand what the question meant by asking
+#for the customer total for each customer and the customer total from the columns in the Order_Items table, so I might have went a
+#bit overboard with the amount of information I listed out. Regardless, I think I answered everything that the question asked of me
+#-Nick
+
+select email_address as "Customer's Email Address", o.order_id as "Order Identification", 
+ship_amount as "Total Cost of Shipping", sum(item_price-discount_amount) as "Total Amount Spent Per Item", 
+quantity as "Total Amount of Items Bought", round(sum((item_price-discount_amount) + ship_amount)) as "Cost of Item + Shipping"
+from customers join orders o
+on customers.customer_id = o.customer_id
+join order_items on order_items.order_id = o.order_id
+group by email_address, o.order_id;
+
