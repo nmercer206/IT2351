@@ -1,0 +1,11 @@
+#In this instance, I displayed the category name, as well as the product name. I was somewhat confused by what c) meant. The
+#inital part of the question made sense, but the rest didn't, so I presumed that it meant by saying that I had to find sum of
+#(category_name*product_name) and display that information as "OrderDetails". I also tried to sum up the amount of products within
+#category and was able to do so, but the total was displayed down at the bottom of the "Products Within Each Category" column.
+#I wasn't able to isolate that result from the rest of the data shown- Nick
+
+select category_name, if(grouping(product_name), "None", product_name) as "Products Within Each Category",
+sum(c.category_id*product_id) as "OrderDetails"
+from products p join categories c
+on c.category_id = p.category_id
+group by product_name with rollup;

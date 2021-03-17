@@ -1,0 +1,10 @@
+#I tried something different for the first problem. I was adamant about trying to list the categories from highest to lowest,
+#so I looked into w3schools and attempted to resolve this with their means. I still wasn't able to do so, but I was hoping to get
+#your feedback on what I did wrong-Nick
+
+select c.category_name, max(list_price) as "Largest price of each item", count(*) as abc
+from products join categories c on 
+products.category_id = c.category_id
+group by abc desc
+having count(abc)>1
+order by count(abc)>1;

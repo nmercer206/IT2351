@@ -1,0 +1,8 @@
+#I got the query to illustrate each category name, the amount of products in each category, and the highest price within
+#each category of instruments. After numerous attempts, I couldn't manage to set it so the category with the most products appears
+#first. The category with the most items(being the guitars), seems to have been displayed last- Nick
+
+select c.category_name, max(list_price) as "Largest price of each item", count(*) as "Number of each items"
+from products join categories c on 
+products.category_id = c.category_id
+group by category_name;

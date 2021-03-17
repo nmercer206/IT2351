@@ -1,0 +1,5 @@
+#I created a query that stated the total number of orders, as well as stated the total cost of orders- Nick
+
+select count(*) as "Total number of orders",
+sum(ship_amount) as "Total cost of shipping"
+from orders;

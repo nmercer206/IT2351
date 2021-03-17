@@ -1,0 +1,14 @@
+#I found that in this problem, I had to combine three different tables to get all of the information I needed. I needed to
+#combine the order_items, the customers, and the orders table. I then implemented a few formulas that would calculate the cost 
+#of the items, the amount of items bought, and the cost of the orders. I didn't exactly understand what the question meant by asking
+#for the customer total for each customer and the customer total from the columns in the Order_Items table, so I might have went a
+#bit overboard with the amount of information I listed out. Regardless, I think I answered everything that the question asked of me
+#-Nick
+
+select email_address as "Customer's Email Address", o.order_id as "Order Identification", 
+ship_amount as "Total Cost of Shipping", sum(item_price-discount_amount) as "Total Amount Spent Per Item", 
+quantity as "Total Amount of Items Bought", round(sum((item_price-discount_amount) + ship_amount)) as "Cost of Item + Shipping"
+from customers join orders o
+on customers.customer_id = o.customer_id
+join order_items on order_items.order_id = o.order_id
+group by email_address, o.order_id;

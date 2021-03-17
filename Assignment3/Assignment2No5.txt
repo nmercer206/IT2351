@@ -1,0 +1,7 @@
+#This was probably the easiest problem to solve out of the bunch. All I did was convert the example query into a query that
+#utilized subqueries- Nick
+
+select distinct category_name from categories 
+where category_id  in 
+(select category_id from products)
+order by category_name;
