@@ -1,0 +1,74 @@
+1)
+
+#This problem was relatively easy to execute. I had to do a bit of research on how to use the convert and cast functions,
+#but overall, it wasn't too difficult figuring it out.
+
+use nick_guitar_shop;
+
+select list_price, round(list_price, 1) as list_price1Dec, convert(list_price, signed) as list_priceCONV, 
+cast(list_price as signed) as list_priceCAST
+from products;
+
+
+2)
+
+#I didn't have too many problems with this problem. The only problem I had was trying to figure out how many characters were in
+#each row. I overcomplicated it by trying to find out the location of the ' ' within each cell. After consecutively getting a 0
+#as an output, I did some research of my own and found that I needed to use the length() function in order to output the results
+#I needed-Nick
+
+select email_address,
+length(email_address) as Length,
+locate('@', email_address) as '@',
+substring_index(email_address, '@', 1) as Username,
+substring_index(email_address, '@', -1) as Domain
+from customers;
+
+
+3)
+#I had a few issues finding out how to convert the integer from discount_percent into a percent. I tried converting it through my
+#own means by dividing the value of discount_percent by 100 and then multiplying that result by the list_price in order to get the
+#discount_amount. Theoretically, that should totally work, but for some reason, I got an error message when I ran my query.
+#I then looked back at the example problems you posted and found out how to properly output the desired result-Nick
+
+select list_price, discount_percent,
+round(list_price*discount_percent*.01,2) as discount_amount
+from products;
+
+
+4)
+#this problem was surprisingly a lot easier than I thought it'd be. I definitely had to do a bit of research on how to complete
+#parts c-f, but even then, it didn't nearly take me as long of a time as I thought it would have- Nick
+
+use nick_guitar_shop;
+select order_id, order_date, date_add(order_date, interval 2 day) as approx_ship_date, ship_date,
+datediff(ship_date, order_date) as days_to_ship
+from orders
+where ship_date is not null and (order_date>= '2018-03-01' and order_date <'2018-04-00')
+group by order_date;
+
+
+5)
+#I made sure to summarize the cost of each item within each category. I also attempted to find the highest sales and lowest sales
+#for each product within each category and believe I did so-Nick
+
+use nick_guitar_shop;
+select c.category_name, p.product_id, item_price, discount_amount, (item_price-discount_amount) as 'Total Sales',
+first_value(o.item_id) over (order by o.order_id)  as highest_sales,
+last_value(o.item_id) over (order by o.order_id) as lowest_sales
+from categories c join products p on c.category_id = p.category_id
+join order_items o on o.product_id = p.product_id;
+
+
+6)
+#I didn't have too many issues creating my own view. The only problem I ran into was not being able to add the tax amount onto the 
+#final_price correctly. I have no idea why my query didn't correctly register the results, but I attempted everything I could possibly
+#think of and still didn't get the required result-Nick
+
+create or replace view order_item_products as select o.order_id, order_date, tax_amount, ship_date, product_name, item_price, discount_amount,
+(item_price-discount_amount) as 'final price', quantity, (1*'final price' + tax_amount) as 'item_total'
+from orders o join order_items i 
+on o.order_id = i.order_id
+join products p on p.product_id = i.product_id;
+
+select * from order_item_products;
